@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="起點站:"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/ed_start"
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_weight="1" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="終點站:"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textView"
+            app:layout_constraintStart_toStartOf="@id/textView"
+            app:layout_constraintVertical_weight="1"/>
+
+        <EditText
+            android:id="@+id/auto_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="我是起點"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/auto_end"
+            app:layout_constraintEnd_toStartOf="@+id/btn_rev"
+            app:layout_constraintStart_toEndOf="@id/textView"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintHorizontal_weight="6"
+            app:layout_constraintVertical_weight="1" />
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="我是終點"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/auto_start"
+            app:layout_constraintEnd_toEndOf="@id/auto_start"
+            app:layout_constraintTop_toBottomOf="@id/auto_start"
+            app:layout_constraintVertical_weight="1" />
+        <!--
+        <EditText
+            android:id="@+id/ed_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="我是終點"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/ed_start"
+            app:layout_constraintEnd_toEndOf="@id/ed_start"
+            app:layout_constraintTop_toBottomOf="@id/ed_start"
+            app:layout_constraintVertical_weight="1" />
+        -->
+
+
+        <android.widget.Button
+            android:id="@+id/btn_rev"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/baseline_swap_vert_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/auto_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFd1c7b7">
+
+        <android.widget.Button
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="站點搜尋"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_margin="4dp"
+            android:background="#FFf2eada"
+            android:layout_weight="1" />
+
+        <android.widget.Button
+            android:id="@+id/btn_route"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="路線規劃搜尋"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_margin="4dp"
+            android:background="#FFf2eada"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</LinearLayout>
