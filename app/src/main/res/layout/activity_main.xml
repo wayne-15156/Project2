@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintVertical_weight="1"/>
 
-        <AutoCompleteTextView
+        <TextView
             android:id="@+id/auto_start"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -51,6 +51,7 @@
             android:textSize="18dp"
             android:textColor="@color/black"
             android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toTopOf="@+id/auto_end"
             app:layout_constraintEnd_toStartOf="@+id/btn_rev"
             app:layout_constraintStart_toEndOf="@id/textView"
@@ -59,13 +60,14 @@
             app:layout_constraintHorizontal_weight="6"
             app:layout_constraintVertical_weight="1" />
 
-        <AutoCompleteTextView
+        <TextView
             android:id="@+id/auto_end"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:hint="我是終點"
             android:textSize="18dp"
             android:textColor="@color/black"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/auto_start"
             app:layout_constraintEnd_toEndOf="@id/auto_start"
