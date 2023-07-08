@@ -2,6 +2,7 @@ package com.example.project2
 
 import android.app.Dialog
 import android.content.Context
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,6 +19,9 @@ class CreateDialog(context: Context, val data: Array<THSRStationRes>): Dialog(co
         val linearLayout = LinearLayoutManager(context)
         linearLayout.orientation = LinearLayoutManager.VERTICAL
         recyclerview.layoutManager = linearLayout
+        //加入分割線
+        recyclerview.addItemDecoration(DividerItemDecoration(context, linearLayout.orientation))
+
         //-----------------------------
         dialogStationlist.show()
     }
