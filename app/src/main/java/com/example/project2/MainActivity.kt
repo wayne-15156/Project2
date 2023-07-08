@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.project2.databinding.ActivityMainBinding
@@ -149,18 +150,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             true
         }
 
-        binding.autoStart.setOnClickListener {
-            CreateDialog(this, stationList).StationListPage()
 
+
+        /*
+        binding.autoStart.setOnFocusChangeListener {v, bool ->
+            if(bool == true)
+                CreateDialog(this, stationList).StationListPage()
+        }*/
+
+        binding.autoStart.setOnClickListener {
+            CreateDialog(this, it as TextView, stationList).StationListPage()
         }
 
         binding.autoEnd.setOnClickListener {
-            CreateDialog(this, stationList).StationListPage()
+            CreateDialog(this, it as TextView, stationList).StationListPage()
         }
 
 
+
         binding.btnSearch.setOnClickListener {
-            CreateDialog(this, stationList).StationListPage()
+            //CreateDialog(this, stationList).StationListPage()
         }
         binding.btnRoute.setOnClickListener {
 
