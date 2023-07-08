@@ -23,7 +23,7 @@
             android:textColor="@color/black"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintEnd_toStartOf="@+id/ed_start"
+            app:layout_constraintEnd_toStartOf="@id/auto_start"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintVertical_weight="1"/>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/auto_start"
             android:layout_width="0dp"
             android:layout_height="0dp"

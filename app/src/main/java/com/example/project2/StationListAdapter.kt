@@ -23,7 +23,7 @@ class StationListAdapter(context: Context, private val stationList: Array<THSRSt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tv_name.text = stationList[position].StationName.Zh_tw
+        holder.tv_name.text = stationList[position].StationName.Zh_tw + "高鐵站"
         holder.tv_addr.text = stationList[position].StationAddress
     }
 
