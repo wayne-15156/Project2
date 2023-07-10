@@ -2,6 +2,7 @@ package com.example.project2
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -28,12 +29,8 @@ class CreateDialog(private val context: Context, private val v: TextView, val da
         recyclerview.layoutManager = linearLayout
         //加入分割線
         recyclerview.addItemDecoration(DividerItemDecoration(context, linearLayout.orientation))
-        //設定點擊Item事件
-
-
 
         dialogStationlist.show()
     }
-
 
 }

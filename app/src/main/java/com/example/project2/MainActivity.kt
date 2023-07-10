@@ -3,11 +3,14 @@ package com.example.project2
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.project2.databinding.ActivityMainBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -147,16 +150,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         map.setOnMarkerClickListener {
 
 
+
             true
         }
 
+        binding.autoStart.addTextChangedListener {
+            val stationName = binding.autoStart.text.subSequence(0, binding.autoStart.text.length-3)
+            stationList.forEach {
+                if (it.StationName.Zh_tw == stationName.toString()) {
+                    start = it
+                    Log.d("123", start.StationName.Zh_tw)
+                }
+            }
+        }
 
-
-        /*
-        binding.autoStart.setOnFocusChangeListener {v, bool ->
-            if(bool == true)
-                CreateDialog(this, stationList).StationListPage()
-        }*/
+        binding.autoEnd.addTextChangedListener {
+            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
+            stationList.forEach {
+                if (it.StationName.Zh_tw == stationName.toString()) {
+                    end = it
+                    Log.d("123", end.StationName.Zh_tw)
+                }
+            }
+        }
 
         binding.autoStart.setOnClickListener {
             CreateDialog(this, it as TextView, stationList).StationListPage()
@@ -166,10 +182,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             CreateDialog(this, it as TextView, stationList).StationListPage()
         }
 
+        binding.btnRev.setOnClickListener {
+            if (::start.isInitialized && ::end.isInitialized) {
+                val swap = start
+                start = end
+                end = swap
 
+                val swap2 = binding.autoStart.text
+                binding.autoStart.text = binding.autoEnd.text
+                binding.autoEnd.text = swap2
+            }
+        }
 
         binding.btnSearch.setOnClickListener {
-            //CreateDialog(this, stationList).StationListPage()
+
         }
         binding.btnRoute.setOnClickListener {
 
