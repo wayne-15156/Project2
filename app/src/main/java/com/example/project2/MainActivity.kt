@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var stationList: Array<THSRStationRes>
     private lateinit var start: THSRStationRes
     private lateinit var end: THSRStationRes
+    private lateinit var select: THSRStationRes
+
+    private lateinit var dialogStationList: DialogStationlist
+    private lateinit var dialogClickMarker: DialogClickMarker
 
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
@@ -80,7 +85,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     private fun pinPosition(map: GoogleMap) {
         runOnUiThread {
-
             stationList.forEach {
                 val marker = MarkerOptions()
                 marker.position(LatLng(it.StationPosition.PositionLat, it.StationPosition.PositionLon))
@@ -93,7 +97,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         LatLng(23.718, 120.992), 8f))
             }
         }
-
     }
 
     private fun getStation(map: GoogleMap) {
@@ -147,39 +150,109 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
     private fun setListener(map: GoogleMap) {
-        map.setOnMarkerClickListener {
 
+        map.setOnMarkerClickListener {marker ->
+            marker.showInfoWindow()
+
+            stationList.forEach {
+                //抓出marker對應的地標物件
+                if (it.StationName.Zh_tw == marker.title) {
+                    select = it
+
+                    Log.e("123", "${this@MainActivity::select.isInitialized}")
+                    Log.e("select", "${select.StationName.Zh_tw}")
+                    return@forEach
+                }
+            }
+            dialogClickMarker = DialogClickMarker(this, select)
+            dialogClickMarker.show()
+            dialogClickMarker.findViewById<Button>(R.id.btn_start).setOnClickListener {
+                start = select
+                binding.autoStart.text = "高鐵站"
+                //Log.e("123", "${this@MainActivity::select.isInitialized}")
+                dialogClickMarker.dismiss()
+            }
+            dialogClickMarker.findViewById<Button>(R.id.btn_end).setOnClickListener {
+                end = select
+                binding.autoEnd.text = "${end.StationName.Zh_tw}+高鐵站"
+                dialogClickMarker.dismiss()
+            }
 
 
             true
         }
 
         binding.autoStart.addTextChangedListener {
+            if (::dialogStationList.isInitialized)
+                dialogStationList.dismiss()
             val stationName = binding.autoStart.text.subSequence(0, binding.autoStart.text.length-3)
             stationList.forEach {
                 if (it.StationName.Zh_tw == stationName.toString()) {
                     start = it
                     Log.d("123", start.StationName.Zh_tw)
+                    return@forEach
                 }
             }
         }
 
         binding.autoEnd.addTextChangedListener {
-            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
-            stationList.forEach {
-                if (it.StationName.Zh_tw == stationName.toString()) {
-                    end = it
-                    Log.d("123", end.StationName.Zh_tw)
-                }
-            }
+            dialogStationList.dismiss()
+//            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
+//            stationList.forEach {
+//                if (it.StationName.Zh_tw == stationName.toString()) {
+//                    end = it
+//                    Log.d("123", end.StationName.Zh_tw)
+//                    return@forEach
+//                }
+//            }
         }
 
         binding.autoStart.setOnClickListener {
-            CreateDialog(this, it as TextView, stationList).StationListPage()
+            dialogStationList = DialogStationlist(this, stationList,
+                    StationListAdapter(this, binding.autoStart,  stationList,
+                        object: StationListAdapter.ClickOnListener{
+                            override fun onClickItem(position: Int) {
+                                binding.autoStart.text = stationList[position].StationName.Zh_tw
+                            }
+                        })
+            )
+            dialogStationList.show()
         }
 
         binding.autoEnd.setOnClickListener {
-            CreateDialog(this, it as TextView, stationList).StationListPage()
+            dialogStationList = DialogStationlist(this, stationList,
+                StationListAdapter(this, binding.autoEnd,  stationList,
+                    object: StationListAdapter.ClickOnListener{
+                        override fun onClickItem(position: Int) {
+                            binding.autoEnd.text = stationList[position].StationName.Zh_tw
+                            start = stationList[position]
+                        }
+                    }
+                )
+            )
+            dialogStationList.show()
+        }
+
+
+        binding.btnSearch.setOnClickListener {
+            dialogStationList = DialogStationlist(this, stationList, StationSearchAdapter(this,
+                stationList, object: StationSearchAdapter.ClickOnListener{
+                    //Callback
+                    override fun onClickItem(position: Int) {
+                        Log.e("123", "$position")
+                        map.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(stationList[position].StationPosition.PositionLat,
+                                       stationList[position].StationPosition.PositionLon), 15f))
+                        dialogStationList.dismiss()
+                    }
+                }
+            ))
+            dialogStationList.show()
+        }
+
+        binding.btnRoute.setOnClickListener {
+
         }
 
         binding.btnRev.setOnClickListener {
@@ -193,14 +266,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 binding.autoEnd.text = swap2
             }
         }
-
-        binding.btnSearch.setOnClickListener {
-
-        }
-        binding.btnRoute.setOnClickListener {
-
-        }
-
     }
     private fun loadMap() {
         val map = supportFragmentManager.findFragmentById(R.id.map)

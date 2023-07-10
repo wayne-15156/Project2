@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 class StationSearchAdapter(private val context: Context,
-                           private val v: TextView,
                            private val stationList: Array<THSRStationRes>,
-                           private val listener: ClickOnListener):
-                                        RecyclerView.Adapter<StationSearchAdapter.ViewHolder>() {
+                           private val listener: StationSearchAdapter.ClickOnListener
+                           ): RecyclerView.Adapter<StationSearchAdapter.ViewHolder>() {
 
     interface ClickOnListener {
         fun onClickItem(pos: Int)
@@ -36,10 +35,8 @@ class StationSearchAdapter(private val context: Context,
         holder.tv_name.text = stationList[position].StationName.Zh_tw + "高鐵站"
         holder.tv_addr.text = stationList[position].StationAddress
 
-
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
-            v.text = holder.tv_name.text
+            listener.onClickItem(position)
         }
     }
 

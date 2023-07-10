@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/marker_info"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        android:padding="25dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="設定成起點"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        android:padding="4dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="設置成終點"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        android:padding="4dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_rest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="附近餐廳"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        android:padding="4dp"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:textSize="20dp"
+        android:textColor="#FFFF0000"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        android:padding="4dp" />
+
+</LinearLayout>

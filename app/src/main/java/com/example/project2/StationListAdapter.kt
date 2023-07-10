@@ -16,7 +16,7 @@ class StationListAdapter(private val context: Context,
                                         RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
 
     interface ClickOnListener {
-        fun onClickItem(pos: Int)
+        fun onClickItem(pos: Int,)
     }
     class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val tv_name = v.findViewById<TextView>(R.id.tv_name)
@@ -40,13 +40,10 @@ class StationListAdapter(private val context: Context,
         holder.itemView.setOnClickListener {
             Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
             v.text = holder.tv_name.text
+            listener.onClickItem(position)
+
+
         }
-        /*
-        holder.tv_name.rootView.setOnClickListener {
-            Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
-            v.text = holder.tv_name.text
-        }
-        */
     }
 
 

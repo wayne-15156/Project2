@@ -2,18 +2,35 @@ package com.example.project2
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
-import android.view.View
-import android.widget.AutoCompleteTextView
+import android.widget.Adapter
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class CreateDialog(private val context: Context, private val v: TextView, val data: Array<THSRStationRes>): Dialog(context) {
+class DialogStationlist(private val context: Context,
+                        val data: Array<THSRStationRes>,
+                        val adapter: Any): Dialog(context) {
 
-    fun StationListPage() {
+    override fun onStart() {
+        super.onStart()
+
+        this.setContentView(R.layout.station_list)
+
+        if (adapter is StationListAdapter)
+            this.findViewById<RecyclerView>(R.id.recyclerList).adapter = adapter
+        else
+            this.findViewById<RecyclerView>(R.id.recyclerList).adapter = adapter as StationSearchAdapter
+
+        val recyclerview = this.findViewById<RecyclerView>(R.id.recyclerList)
+        val linearLayout = LinearLayoutManager(context)
+        linearLayout.orientation = LinearLayoutManager.VERTICAL
+        recyclerview.layoutManager = linearLayout
+        recyclerview.addItemDecoration(DividerItemDecoration(context, linearLayout.orientation))
+    }
+
+    /*fun StationListPage() {
         val dialogStationlist = Dialog(context)
         dialogStationlist.setContentView(R.layout.station_list)
         dialogStationlist.findViewById<RecyclerView>(R.id.recyclerList).adapter =
@@ -31,6 +48,6 @@ class CreateDialog(private val context: Context, private val v: TextView, val da
         recyclerview.addItemDecoration(DividerItemDecoration(context, linearLayout.orientation))
 
         dialogStationlist.show()
-    }
+    }*/
 
 }
