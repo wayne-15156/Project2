@@ -1,4 +1,4 @@
-package com.example.project2
+package com.example.project2.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -10,17 +10,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project2.databinding.StationListBinding
+import kotlinx.coroutines.selects.select
 
 
-class DialogClickMarker(private val context: Context,
-                        val select: THSRStationRes): Dialog(context) {
+class DialogClickMarker(context: Context): Dialog(context) {
 
     override fun onStart() {
         super.onStart()
-        setContentView(R.layout.marker_list)
-        findViewById<TextView>(R.id.tv_title).text = "${select.StationName.Zh_tw}高鐵站"
         this.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
     }
-
 }

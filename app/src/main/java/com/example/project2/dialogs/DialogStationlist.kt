@@ -1,12 +1,14 @@
-package com.example.project2
+package com.example.project2.dialogs
 
 import android.app.Dialog
 import android.content.Context
-import android.widget.Adapter
-import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project2.R
+import com.example.project2.THSRStationRes
+import com.example.project2.adapters.StationListAdapter
+import com.example.project2.adapters.StationSearchAdapter
 
 
 class DialogStationlist(private val context: Context,

@@ -1,21 +1,23 @@
-package com.example.project2
+package com.example.project2.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.project2.R
+import com.example.project2.THSRStationRes
 
-class StationListAdapter(private val context: Context,
-                         private val stationList: Array<THSRStationRes>,
-                         private val listener: ClickOnListener):
-                                        RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
+class StationSearchAdapter(private val context: Context,
+                           private val stationList: Array<THSRStationRes>,
+                           private val listener: ClickOnListener
+                           ): RecyclerView.Adapter<StationSearchAdapter.ViewHolder>() {
+
     interface ClickOnListener {
         fun onClickItem(pos: Int)
     }
+
     class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val tv_name = v.findViewById<TextView>(R.id.tv_name)
         val tv_addr = v.findViewById<TextView>(R.id.tv_addr)
@@ -34,7 +36,6 @@ class StationListAdapter(private val context: Context,
         holder.tv_addr.text = stationList[position].StationAddress
 
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
             listener.onClickItem(position)
         }
     }

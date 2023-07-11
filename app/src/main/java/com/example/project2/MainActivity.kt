@@ -1,19 +1,19 @@
 package com.example.project2
 
 import android.annotation.SuppressLint
-import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.widget.addTextChangedListener
+import com.example.project2.adapters.StationListAdapter
+import com.example.project2.adapters.StationSearchAdapter
 import com.example.project2.databinding.ActivityMainBinding
 import com.example.project2.databinding.MarkerListBinding
+import com.example.project2.dialogs.DialogClickMarker
+import com.example.project2.dialogs.DialogStationlist
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var stationList: Array<THSRStationRes>
+    private lateinit var tokenObj: tokenObject
     private lateinit var start: THSRStationRes
     private lateinit var end: THSRStationRes
     private lateinit var select: THSRStationRes
@@ -127,11 +128,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             override fun onResponse(call: Call, response: Response) {
                 val json = response.body?.string()
-                val myObject = Gson().fromJson(json, tokenObject::class.java)
+                tokenObj = Gson().fromJson(json, tokenObject::class.java)
 
                 val url = "https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/Station"
                 val req: Request = Request.Builder()
-                    .addHeader("authorization", "Bearer ${myObject.access_token}")
+                    .addHeader("authorization", "Bearer ${tokenObj.access_token}")
                     .url(url)
                     .build()
 
@@ -151,10 +152,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
     private fun setListener(map: GoogleMap) {
+        Log.e("123", "進入Listener")
 
         map.setOnMarkerClickListener {marker ->
             marker.showInfoWindow()
-
+            Log.e("123", "進入MarkListener")
             stationList.forEach {
                 //抓出marker對應的地標物件
                 if (it.StationName.Zh_tw == marker.title) {
@@ -164,9 +166,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             val dbinding = MarkerListBinding.inflate(layoutInflater)
-            dialogClickMarker = DialogClickMarker(this, select)
+
+            dialogClickMarker = DialogClickMarker(this)
+            dialogClickMarker.setContentView(dbinding.root)
             dialogClickMarker.show()
 
+            dbinding.tvTitle.text = "${select.StationName.Zh_tw}高鐵站"
             dbinding.btnStart.setOnClickListener {
                 start = select
                 binding.autoStart.text = "${start.StationName.Zh_tw}高鐵站"
@@ -184,37 +189,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             dbinding.btnRest.setOnClickListener {
-
             }
-
 
             true
         }
-
-        /*binding.autoStart.addTextChangedListener {
-            if (::dialogStationList.isInitialized)
-                dialogStationList.dismiss()
-            val stationName = binding.autoStart.text.subSequence(0, binding.autoStart.text.length-3)
-            stationList.forEach {
-                if (it.StationName.Zh_tw == stationName.toString()) {
-                    start = it
-                    Log.d("123", start.StationName.Zh_tw)
-                    return@forEach
-                }
-            }
-        }
-
-        binding.autoEnd.addTextChangedListener {
-            dialogStationList.dismiss()
-            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
-            stationList.forEach {
-                if (it.StationName.Zh_tw == stationName.toString()) {
-                    end = it
-                    Log.d("123", end.StationName.Zh_tw)
-                    return@forEach
-                }
-            }
-        }*/
 
         binding.autoStart.setOnClickListener {
             dialogStationList = DialogStationlist(this, stationList,
@@ -266,6 +244,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.btnRoute.setOnClickListener {
+            if( ::start.isInitialized && ::end.isInitialized)
+                if(start != end) {
+                    val intent = Intent(this, DailyActivity::class.java)
+                    intent.putExtra("token", tokenObj.access_token)
+                    intent.putExtra("startId", start.StationID)
+                    intent.putExtra("endId", end.StationID)
+                    startActivity(intent)
+                }
+                else
+                    Toast.makeText(this, "起終點站不能相同!", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "請輸入起(終)點站!", Toast.LENGTH_SHORT).show()
 
         }
 
