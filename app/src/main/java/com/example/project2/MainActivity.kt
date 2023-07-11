@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.project2.databinding.ActivityMainBinding
+import com.example.project2.databinding.MarkerListBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -158,31 +159,39 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 //抓出marker對應的地標物件
                 if (it.StationName.Zh_tw == marker.title) {
                     select = it
-
-                    Log.e("123", "${this@MainActivity::select.isInitialized}")
-                    Log.e("select", "${select.StationName.Zh_tw}")
                     return@forEach
                 }
             }
+
+            val dbinding = MarkerListBinding.inflate(layoutInflater)
             dialogClickMarker = DialogClickMarker(this, select)
             dialogClickMarker.show()
-            dialogClickMarker.findViewById<Button>(R.id.btn_start).setOnClickListener {
+
+            dbinding.btnStart.setOnClickListener {
                 start = select
-                binding.autoStart.text = "高鐵站"
-                //Log.e("123", "${this@MainActivity::select.isInitialized}")
+                binding.autoStart.text = "${start.StationName.Zh_tw}高鐵站"
                 dialogClickMarker.dismiss()
             }
-            dialogClickMarker.findViewById<Button>(R.id.btn_end).setOnClickListener {
+
+            dbinding.btnEnd.setOnClickListener {
                 end = select
-                binding.autoEnd.text = "${end.StationName.Zh_tw}+高鐵站"
+                binding.autoEnd.text = "${end.StationName.Zh_tw}高鐵站"
                 dialogClickMarker.dismiss()
+            }
+
+            dbinding.btnNo.setOnClickListener {
+                dialogClickMarker.dismiss()
+            }
+
+            dbinding.btnRest.setOnClickListener {
+
             }
 
 
             true
         }
 
-        binding.autoStart.addTextChangedListener {
+        /*binding.autoStart.addTextChangedListener {
             if (::dialogStationList.isInitialized)
                 dialogStationList.dismiss()
             val stationName = binding.autoStart.text.subSequence(0, binding.autoStart.text.length-3)
@@ -197,22 +206,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.autoEnd.addTextChangedListener {
             dialogStationList.dismiss()
-//            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
-//            stationList.forEach {
-//                if (it.StationName.Zh_tw == stationName.toString()) {
-//                    end = it
-//                    Log.d("123", end.StationName.Zh_tw)
-//                    return@forEach
-//                }
-//            }
-        }
+            val stationName = binding.autoEnd.text.subSequence(0, binding.autoEnd.text.length-3)
+            stationList.forEach {
+                if (it.StationName.Zh_tw == stationName.toString()) {
+                    end = it
+                    Log.d("123", end.StationName.Zh_tw)
+                    return@forEach
+                }
+            }
+        }*/
 
         binding.autoStart.setOnClickListener {
             dialogStationList = DialogStationlist(this, stationList,
-                    StationListAdapter(this, binding.autoStart,  stationList,
+                    StationListAdapter(this, stationList,
                         object: StationListAdapter.ClickOnListener{
                             override fun onClickItem(position: Int) {
-                                binding.autoStart.text = stationList[position].StationName.Zh_tw
+                                binding.autoStart.text = "${stationList[position].StationName.Zh_tw}高鐵站"
+                                start = stationList[position]
+                                //Log.e("123", "${start.StationName.Zh_tw}")
+                                dialogStationList.dismiss()
                             }
                         })
             )
@@ -221,11 +233,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.autoEnd.setOnClickListener {
             dialogStationList = DialogStationlist(this, stationList,
-                StationListAdapter(this, binding.autoEnd,  stationList,
+                StationListAdapter(this,  stationList,
                     object: StationListAdapter.ClickOnListener{
                         override fun onClickItem(position: Int) {
-                            binding.autoEnd.text = stationList[position].StationName.Zh_tw
-                            start = stationList[position]
+                            binding.autoEnd.text = "${stationList[position].StationName.Zh_tw}高鐵站"
+                            end = stationList[position]
+                            //Log.e("123", "${end.StationName.Zh_tw}")
+                            dialogStationList.dismiss()
                         }
                     }
                 )
@@ -266,6 +280,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 binding.autoEnd.text = swap2
             }
         }
+
     }
     private fun loadMap() {
         val map = supportFragmentManager.findFragmentById(R.id.map)
