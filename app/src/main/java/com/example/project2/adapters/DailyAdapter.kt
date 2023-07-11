@@ -1,6 +1,7 @@
 package com.example.project2.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,17 +43,29 @@ class DailyAdapter(context: Context,
         val ariTime = dailyList[position].DestinationStopTime.ArrivalTime
         holder.dailyDepaTime.text = depTime
         holder.dailyArriTime.text = ariTime
+        holder.dailyTimeCost.text = calTime(depTime, ariTime)
 
         listener.onClickItem(position)
-
 
         /*
         holder.itemView.setOnClickListener {
             Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
-
         }*/
     }
 
+    private fun calTime(sT: String, eT: String): String {
+        val sTArr = sT.split(":").map{ it.toInt()}.toTypedArray()
+        val eTArr = eT.split(":").map{ it.toInt()}.toTypedArray()
+
+        if(sTArr[1] > eTArr[1]) {
+            eTArr[0]--
+            eTArr[1] += 60
+        }
+        val hrs = eTArr[0] - sTArr[0]
+        val mins = eTArr[1] - sTArr[1]
+
+        return "${if (hrs > 0) "${hrs}時" else "" }${mins}分"
+    }
 
     override fun getItemCount(): Int {
         return dailyList.size
