@@ -14,11 +14,12 @@ import com.example.project2.THSRStationRes
 
 class DailyAdapter(context: Context,
                    private val dailyList: Array<DailyTimeTable>,
-                   private val listener: ClickOnListener):
+                   private val passCode: CodePasser):
                                         RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
 
-    interface ClickOnListener {
-        fun onClickItem(pos: Int)
+    interface CodePasser {
+        fun showText(pos: Int)
+        fun setListener(pos: Int)
     }
 
     class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -45,12 +46,11 @@ class DailyAdapter(context: Context,
         holder.dailyArriTime.text = ariTime
         holder.dailyTimeCost.text = calTime(depTime, ariTime)
 
-        listener.onClickItem(position)
+        passCode.showText(position)
 
-        /*
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, "您點擊的是: ${holder.tv_name.text}", Toast.LENGTH_SHORT).show()
-        }*/
+            passCode.setListener(position)
+        }
     }
 
     private fun calTime(sT: String, eT: String): String {

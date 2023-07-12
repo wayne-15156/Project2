@@ -1,5 +1,6 @@
 package com.example.project2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -27,11 +28,13 @@ class DailyActivity : AppCompatActivity() {
             val accessToken = it.getString("token")
             val datetime = LocalDateTime.now().toString().substring(0 until 10)
             Log.e("time", datetime)
+            val startId = it.getString("startId")
+            val endId = it.getString("endId")
 
             val url = "https://tdx.transportdata.tw/api/basic/v2/Rail/THSR/DailyTimetable/OD/" +
-                    "${it.getString("startId")}/" +
+                    "${startId}/" +
                     "to/" +
-                    "${it.getString("endId")}/" +
+                    "${endId}/" +
                     "${datetime}?%24format=JSON"
 
             val req: Request = Request.Builder()
@@ -53,11 +56,20 @@ class DailyActivity : AppCompatActivity() {
                     //layoutManager已在xml設好
                     runOnUiThread {
                         binding?.recyclerDaily?.adapter =
-                            DailyAdapter(this@DailyActivity, dailyList, object: DailyAdapter.ClickOnListener {
-                                override fun onClickItem(pos: Int) {
+                            DailyAdapter(this@DailyActivity, dailyList, object: DailyAdapter.CodePasser {
+                                override fun showText(pos: Int) {
                                     binding?.tvPath?.text = "${dailyList[pos].OriginStopTime.StationName.Zh_tw}" +
                                             "\u2192" + //→
                                             "${dailyList[pos].DestinationStopTime.StationName.Zh_tw}"
+                                }
+
+                                override fun setListener(pos: Int) {
+                                    val intent = Intent(this@DailyActivity, TimeTableActivity::class.java)
+                                    intent.putExtra("token", accessToken)
+                                    intent.putExtra("trainId", dailyList[pos].DailyTrainInfo.TrainNo)
+                                    intent.putExtra("startId", startId)
+                                    intent.putExtra("endId", endId)
+                                    startActivity(intent)
                                 }
                             })
                     }

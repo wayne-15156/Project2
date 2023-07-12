@@ -34,12 +34,18 @@ data class DailyTimeTable(val TrainDate: String, val DailyTrainInfo: dailyTrainI
 
 }
 
-data class TrainTimeTable(val TrainDate: String, val DailyTrainInfo: dailyTrainInfo, val StopTimes: ArrayList<stopTimes>, val UpdateTime: String, val VersionID: Int) {
-    data class dailyTrainInfo(val TrainNo: String, val Direction: Int, val StartingStationID: String, val StartingStationName: startingStationName, val EndingStationID: String, val EndingStationName: endingStationName) {
+data class TrainTimeTable(val TrainDate: String, val DailyTrainInfo: dailyTrainInfo,
+                          val StopTimes: ArrayList<stopTimes>, val UpdateTime: String,
+                          val VersionID: Int) {
+    data class dailyTrainInfo(val TrainNo: String, val Direction: Int, val StartingStationID: String,
+                              val StartingStationName: startingStationName, val EndingStationID: String,
+                              val EndingStationName: endingStationName) {
         data class startingStationName(val Zh_tw: String, val En: String)
         data class endingStationName(val Zh_tw: String, val En: String)
     }
-    data class stopTimes(val StopSequence: Int, val StationID: String, val StationName: stationName, val ArrivalTime: String, val DepartureTime: String) {
+    data class stopTimes(val StopSequence: Int, val StationID: String,
+                         val StationName: stationName, val ArrivalTime: String,
+                         val DepartureTime: String) {
         data class stationName(val Zh_tw: String, val En: String)
     }
 }

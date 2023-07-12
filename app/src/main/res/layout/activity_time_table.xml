@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".TimeTableActivity">
+
+    <TextView
+        android:id="@+id/tv_timeTableTitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:textSize="24dp"
+        android:textColor="@color/black"
+        android:background="@drawable/stroke1"
+        android:gravity="center" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#B0B0B0B0" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="沿途停靠"
+            android:textSize="18dp"
+            android:textColor="#FF70CCE1"
+            android:background="@color/white"
+            android:layout_weight="6"
+            android:layout_marginStart="10dp"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="表定發車"
+            android:textSize="18dp"
+            android:background="@color/white"
+            android:textColor="#FF70CCE1"
+            android:layout_weight="4"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#FF70CCE1"
+        android:layout_marginHorizontal="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/timeTableRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="35"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical" />
+
+</LinearLayout>
