@@ -54,6 +54,7 @@ data class RestRes(val results: Results) {
     data class Results(val content: ArrayList<Content>) {
         data class Content(val name: String, val vicinity: String,
                            val photo: String, val rating: String,
-                           val reviewsNumber: String)
+                           val reviewsNumber: String,
+                            val lat: Double, val lng: Double, var dist: Double?)
     }
 }

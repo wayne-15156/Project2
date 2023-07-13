@@ -157,7 +157,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         map.setOnMarkerClickListener {marker ->
             marker.showInfoWindow()
-            Log.e("123", "進入MarkListener")
             stationList.forEach {
                 //抓出marker對應的地標物件
                 if (it.StationName.Zh_tw == marker.title) {
@@ -191,6 +190,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
             dbinding.btnRest.setOnClickListener {
                 val intent = Intent(this, RestActivity::class.java)
+                intent.putExtra("stationLat", select.StationPosition.PositionLat)
+                intent.putExtra("stationLng", select.StationPosition.PositionLon)
                 startActivity(intent)
             }
 

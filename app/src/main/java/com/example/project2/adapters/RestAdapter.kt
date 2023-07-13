@@ -1,22 +1,23 @@
 package com.example.project2.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project2.R
 import com.example.project2.RestRes
-import com.example.project2.THSRStationRes
-import com.example.project2.databinding.ItemRestBinding
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import com.squareup.picasso.Picasso
 
-class RestAdapter(private val context: Context,
-                  private val restList: ArrayList<RestRes.Results.Content>):
+class RestAdapter(context: Context,
+                  private val restList: ArrayList<RestRes.Results.Content>,
+                  private val stationLatLng: LatLng):
                                         RecyclerView.Adapter<RestAdapter.ViewHolder>() {
 
     class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -38,13 +39,16 @@ class RestAdapter(private val context: Context,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvName.text = restList[position].name
         holder.tvAddr.text = restList[position].vicinity
-
+        holder.tvDist.text = "距離: ${restList[position].dist}公里"
         holder.tvRating.text = "評價:\t${restList[position].rating}(${restList[position].reviewsNumber}則評論)"
 
         Picasso.get()
             .load(restList[position].photo)
             //.resize(280,221)
             .into(holder.imgRest)
+
+        Log.e("123", "dist: ${restList[position].dist}")
+
     }
 
 
