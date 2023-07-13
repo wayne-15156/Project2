@@ -14,7 +14,6 @@ import kotlinx.coroutines.selects.select
 
 
 class DialogClickMarker(context: Context): Dialog(context) {
-
     override fun onStart() {
         super.onStart()
         this.window?.setBackgroundDrawableResource(android.R.color.transparent)

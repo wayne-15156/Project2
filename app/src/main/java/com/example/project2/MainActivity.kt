@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,7 +34,7 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var stationList: Array<THSRStationRes>
+    private lateinit var stationList: MutableList<THSRStationRes>
     private lateinit var tokenObj: tokenObject
     private lateinit var start: THSRStationRes
     private lateinit var end: THSRStationRes
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     override fun onResponse(call: Call, response: Response) {
                         val json2 = response.body?.string()
-                        stationList = Gson().fromJson(json2, Array<THSRStationRes>::class.java)
+                        stationList = Gson().fromJson(json2, Array<THSRStationRes>::class.java).toMutableList()
 
                         pinPosition(map)
                     }
@@ -189,45 +190,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             dbinding.btnRest.setOnClickListener {
+                val intent = Intent(this, RestActivity::class.java)
+                startActivity(intent)
             }
 
             true
         }
 
         binding.autoStart.setOnClickListener {
-            dialogStationList = DialogStationlist(this, stationList,
-                    StationListAdapter(this, stationList,
-                        object: StationListAdapter.ClickOnListener{
-                            override fun onClickItem(position: Int) {
-                                binding.autoStart.text = "${stationList[position].StationName.Zh_tw}高鐵站"
-                                start = stationList[position]
-                                //Log.e("123", "${start.StationName.Zh_tw}")
-                                dialogStationList.dismiss()
-                            }
-                        })
-            )
+            val listAdapter = StationListAdapter(this, stationList,
+                object: StationListAdapter.ClickOnListener{
+                    override fun onClickItem(position: Int) {
+                        binding.autoStart.text = "${stationList[position].StationName.Zh_tw}高鐵站"
+                        start = stationList[position]
+                        dialogStationList.dismiss()
+                    }})
+            dialogStationList = DialogStationlist(this, stationList, listAdapter, null)
             dialogStationList.show()
+
         }
 
         binding.autoEnd.setOnClickListener {
-            dialogStationList = DialogStationlist(this, stationList,
-                StationListAdapter(this,  stationList,
-                    object: StationListAdapter.ClickOnListener{
-                        override fun onClickItem(position: Int) {
-                            binding.autoEnd.text = "${stationList[position].StationName.Zh_tw}高鐵站"
-                            end = stationList[position]
-                            //Log.e("123", "${end.StationName.Zh_tw}")
-                            dialogStationList.dismiss()
-                        }
+            val listAdapter = StationListAdapter(this,  stationList,
+                object: StationListAdapter.ClickOnListener{
+                    override fun onClickItem(position: Int) {
+                        binding.autoEnd.text = "${stationList[position].StationName.Zh_tw}高鐵站"
+                        end = stationList[position]
+                        //Log.e("123", "${end.StationName.Zh_tw}")
+                        dialogStationList.dismiss()
                     }
-                )
-            )
+                })
+            dialogStationList = DialogStationlist(this, stationList,
+                listAdapter , null)
             dialogStationList.show()
         }
 
 
         binding.btnSearch.setOnClickListener {
-            dialogStationList = DialogStationlist(this, stationList, StationSearchAdapter(this,
+            dialogStationList = DialogStationlist(this, stationList, null, StationSearchAdapter(this,
                 stationList, object: StationSearchAdapter.ClickOnListener{
                     //Callback
                     override fun onClickItem(position: Int) {

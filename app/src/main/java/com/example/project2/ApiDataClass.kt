@@ -49,3 +49,11 @@ data class TrainTimeTable(val TrainDate: String, val DailyTrainInfo: dailyTrainI
         data class stationName(val Zh_tw: String, val En: String)
     }
 }
+
+data class RestRes(val results: Results) {
+    data class Results(val content: ArrayList<Content>) {
+        data class Content(val name: String, val vicinity: String,
+                           val photo: String, val rating: String,
+                           val reviewsNumber: String)
+    }
+}

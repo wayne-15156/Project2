@@ -11,7 +11,7 @@ import com.example.project2.R
 import com.example.project2.THSRStationRes
 
 class StationListAdapter(private val context: Context,
-                         private val stationList: Array<THSRStationRes>,
+                         private val stationList: MutableList<THSRStationRes>,
                          private val listener: ClickOnListener):
                                         RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
     interface ClickOnListener {
